@@ -2,10 +2,12 @@ const express = require("express");
 const app = express()
 const { sequelize } = require("./models")
 const userRouter = require("./routers/users");
+const productRouter = require("./routers/products");
 
 app.use(express.json());
 
 app.use("/users", userRouter);
+app.use("/products", productRouter);
 
 app.use((err,req,res,next)=>{
     const {status = 500} = err;

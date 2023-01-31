@@ -23,7 +23,20 @@ Content-Type: application/json
     "password":"password1"
 }
 
+// 상품
 ###
-// 토큰 테스트
-GET http://localhost:3000/is_logined
+POST http://localhost:3000/products
+Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
+
+{
+    "category_name" : "커피",
+    "subcategory_name": "싱글오리진",
+    "size_name":"100g",
+    "size_price":"25000",
+    "taste_name":"Apple",
+    "grinding_name":"드립",
+    "product_name" : "두번째 커피",
+    "roastingDate" : "2023-01-02"
+}
+
