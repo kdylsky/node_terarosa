@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router()
 const { User } = require("../models");
-const { signupValidation, loginValidation } = require("../middlewares/middleware_joi")
+const { signupValidation, loginValidation } = require("../middlewares/joi_middleware")
 const wrapAsync = require("../utils/wrapAsync")
 
 router.post("/signup", signupValidation, wrapAsync(async(req,res)=>{

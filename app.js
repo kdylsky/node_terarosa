@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express()
-const { sequelize } = require("./models/index")
+const { sequelize } = require("./models")
 const userRouter = require("./routers/users");
 
 app.use(express.json());
@@ -12,7 +12,7 @@ app.use((err,req,res,next)=>{
     if(!err.message){
         err.message = "Default Error Message"
     }
-    res.status(400).json({message:err.message})
+    res.status(status).json({message:err.message})
 })
 
 app.listen(3000, async()=>{
