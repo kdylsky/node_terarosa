@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
-"use strict";
+("use strict");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -8,10 +8,21 @@ module.exports = (sequelize, DataTypes) => {
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
-    */
-   
-   static associate(models) {
-     // define association here
+     */
+    static async findUserAndVaildate(username, password){
+      const user = await User.findOne({where:{username:username}})
+      if (!user){
+        return false
+      }
+      const result = await bcrypt.compare(password, user.password);
+      if(!result){
+        return false
+      }
+      return true
+    };
+  
+    static associate(models) {
+      // define association here
     }
   }
   // sequelize.define("users", { indexes: [{unique: true, fields: ["username"]}]});
@@ -24,14 +35,14 @@ module.exports = (sequelize, DataTypes) => {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate:{
-          async customValidator(value){
-            const user = await User.findOne({where:{username:value}})
-            if (user){
-              throw new Error("이미 존재하는 유저이름입니다.")
+        validate: {
+          async customValidator(value) {
+            const user = await User.findOne({ where: { username: value } });
+            if (user) {
+              throw new Error("이미 존재하는 유저이름입니다.");
             }
-          }
-        }
+          },
+        },
       },
       password: {
         type: DataTypes.STRING,
@@ -44,26 +55,26 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate:{
-          async customValidator(value){
-            const user = await User.findOne({where:{email:value}})
-            if (user){
-              throw new Error("이미 존재하는 이메일 주소입니다.")
+        validate: {
+          async customValidator(value) {
+            const user = await User.findOne({ where: { email: value } });
+            if (user) {
+              throw new Error("이미 존재하는 이메일 주소입니다.");
             }
-          }
-        }
+          },
+        },
       },
       phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate:{
-          async customValidator(value){
-            const user = await User.findOne({where:{phone_number:value}})
-            if (user){
-              throw new Error("이미 존재하는 핸드폰 번호입니다.")
+        validate: {
+          async customValidator(value) {
+            const user = await User.findOne({ where: { phone_number: value } });
+            if (user) {
+              throw new Error("이미 존재하는 핸드폰 번호입니다.");
             }
-          }
-        }
+          },
+        },
       },
     },
     {
@@ -72,6 +83,13 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
     }
   );
+  
+  
+  
+  User.beforeCreate(async function (user, options) {
+    const hashedPw = await bcrypt.hash(user.password, 12);
+    return (user.password = hashedPw);
+  });
 
   return User;
 };

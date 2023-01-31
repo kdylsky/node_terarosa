@@ -16,3 +16,11 @@ module.exports.userSignUpSchema = Joi.object({
         .messages({'string.pattern.base': `휴대전화 형식이 잘못 됬습니다.`})
         .required()
 }).options({abortEarly: false})
+
+module.exports.userLoginSchema = Joi.object({
+    username:Joi.string().not("").required(),
+    password: Joi.string()
+        .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)    
+        .messages({'string.pattern.base': `비밀번호 형식이 잘못 됬습니다.`})
+        .required(),
+}).options({abortEarly: false})
