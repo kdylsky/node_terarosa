@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 ("use strict");
 const { Model } = require("sequelize");
@@ -9,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    
     static async findUserAndVaildate(username, password){
       const user = await User.findOne({where:{username:username}})
       if (!user){
@@ -18,14 +20,13 @@ module.exports = (sequelize, DataTypes) => {
       if(!result){
         return false
       }
-      return true
+      return user
     };
   
     static associate(models) {
       // define association here
     }
   }
-  // sequelize.define("users", { indexes: [{unique: true, fields: ["username"]}]});
   User.init(
     {
       name: {
@@ -83,13 +84,15 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
     }
   );
-  
-  
-  
   User.beforeCreate(async function (user, options) {
     const hashedPw = await bcrypt.hash(user.password, 12);
     return (user.password = hashedPw);
   });
 
+  User.prototype.testMethod = function () {
+    const token = jwt.sign(this.username, process.env.JWT_SECRET_KEY) 
+    return token
+  };
+  
   return User;
 };
