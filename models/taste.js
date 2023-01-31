@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Taste extends Model {
     /**
@@ -13,21 +11,24 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Taste.init({
-    name: {
-      type:DataTypes.STRING,
-      allowNull:false,
-      validate:{
-        isIn:{
-              args: [["Apple", "Mango", "Grape", "Banana", "Peach"]],
-              msg: "Apple, Mango, Grape, Banana, Peach에서 고르세요!!!",
-            },
-        }
+  Taste.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isIn: {
+            args: [["Apple", "Mango", "Grape", "Banana", "Peach"]],
+            msg: "Apple, Mango, Grape, Banana, Peach에서 고르세요!!!",
+          },
+        },
+      },
+    },
+    {
+      sequelize,
+      tableName: "tastes",
+      modelName: "Taste",
     }
-  }, {
-    sequelize,
-    tableName: "tastes",
-    modelName: 'Taste',
-  });
+  );
   return Taste;
 };

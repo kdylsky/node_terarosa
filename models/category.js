@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.SubCategory, {foreignKey:"categoryId", as:"subcategories"})
+      this.hasMany(models.SubCategory, {
+        foreignKey: "categoryId",
+        as: "subcategories",
+      });
     }
   }
   Category.init(
@@ -18,12 +21,12 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate:{
-          isIn:{
-                args: [["커피", "식품"]],
-                msg: "커피 또는 식품 둘 중 하나를 고르세요",
-              },
+        validate: {
+          isIn: {
+            args: [["커피", "식품"]],
+            msg: "커피 또는 식품 둘 중 하나를 고르세요",
           },
+        },
       },
     },
     {

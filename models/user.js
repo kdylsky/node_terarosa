@@ -10,19 +10,19 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    
-    static async findUserAndVaildate(username, password){
-      const user = await User.findOne({where:{username:username}})
-      if (!user){
-        return false
+
+    static async findUserAndVaildate(username, password) {
+      const user = await User.findOne({ where: { username: username } });
+      if (!user) {
+        return false;
       }
       const result = await bcrypt.compare(password, user.password);
-      if(!result){
-        return false
+      if (!result) {
+        return false;
       }
-      return user
-    };
-  
+      return user;
+    }
+
     static associate(models) {
       // define association here
     }
@@ -90,9 +90,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.prototype.testMethod = function () {
-    const token = jwt.sign(this.username, process.env.JWT_SECRET_KEY) 
-    return token
+    const token = jwt.sign(this.username, process.env.JWT_SECRET_KEY);
+    return token;
   };
-  
+
   return User;
 };
