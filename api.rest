@@ -1,0 +1,15 @@
+//유저
+GET http://localhost:3000/users
+
+###
+POST http://localhost:3000/users/signup
+Content-Type: application/json
+
+{
+    "name":"kim do yeon",
+    "username":"kdy",
+    "email":"kdy@gamil.com",
+    "password":"password1",
+    "address":"korea",
+    "phone_number":"010-0000-0000"
+}
