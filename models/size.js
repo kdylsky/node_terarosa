@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Size.init(
     {
-      name: {
+      size: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
