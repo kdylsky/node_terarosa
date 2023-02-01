@@ -11,6 +11,6 @@ module.exports.loginUser = async (req, res) => {
   if (!user) {
     return console.log("username과 password를 다시 확인해 주세요!!");
   }
-  const token = user.testMethod();
+  const token = user.makeToken();
   res.status(200).json({ message: "로그인에 성공했습니다.", token: token });
 };

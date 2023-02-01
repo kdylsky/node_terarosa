@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isIn: {
-            args: [["100g", "500g", "1kg"]],
-            msg: "100g, 500g, 1kg 중 하나를 고르세요",
+            args: [["100g", "250g", "500g"]],
+            msg: "100g, 250g, 500g 중 하나를 고르세요",
           },
         },
       },

@@ -24,3 +24,24 @@ module.exports.userLoginSchema = Joi.object({
     .messages({ "string.pattern.base": `비밀번호 형식이 잘못 됬습니다.` })
     .required(),
 }).options({ abortEarly: false });
+
+module.exports.productCreateSchema = Joi.object({
+  category_name: Joi.only().allow("커피", "식품").required(),
+  subcategory_name: Joi.only()
+    .allow("싱글오리진", "브렌드", "드립백", "생두")
+    .required(),
+  size_price: Joi.array().items(
+    Joi.object({
+      size: Joi.only().allow("100g", "250g", "500g").required(),
+      price: Joi.number().required(),
+    }).required()
+  ),
+  taste_name: Joi.only()
+    .allow("Apple", "Mango", "Grape", "Banana", "Peach")
+    .required(),
+  grinding_name: Joi.only()
+    .allow("갈지않음", "에스프레소", "모카포트", "드립", "프렌치프레스")
+    .required(),
+  product_name: Joi.string().not("").required(),
+  roastingDate: Joi.date().iso().required(),
+}).options({ abortEarly: false });

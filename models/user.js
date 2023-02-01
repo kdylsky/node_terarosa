@@ -11,6 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
 
+    // 인스턴스메서드
+    // 특정 유저 모델이 가지는 메서드
+    makeToken() {
+      const token = jwt.sign(this.username, process.env.JWT_SECRET_KEY);
+      return token;
+    }
+
+    // 정적메서드
+    // 전체 유저 모델이 가지는 메서드
     static async findUserAndVaildate(username, password) {
       const user = await User.findOne({ where: { username: username } });
       if (!user) {
@@ -35,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       username: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         validate: {
           async customValidator(value) {
@@ -55,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         validate: {
           async customValidator(value) {
@@ -67,6 +78,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       phone_number: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         validate: {
           async customValidator(value) {
@@ -82,6 +94,9 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       tableName: "users",
       modelName: "User",
+      indexes: [
+        { unique: true, fields: ["username", "email", "phone_number"] },
+      ],
     }
   );
   User.beforeCreate(async function (user, options) {
