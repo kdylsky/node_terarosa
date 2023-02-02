@@ -9,6 +9,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.User, {
+        foreignKey: "userId",
+        as: "user",
+      });
+
+      this.belongsTo(models.SubCategory, {
+        foreignKey: "subCategoryId",
+        as: "subcategory",
+      });
+      this.hasMany(models.Size, {
+        foreignKey: "productId",
+        as: "sizes",
+      });
       this.belongsToMany(models.Taste, {
         through: "product_taste",
         foreignKey: "product_id",

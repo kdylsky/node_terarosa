@@ -17,6 +17,7 @@ const {
   sequelize,
   product_grinding,
   product_taste,
+  User,
 } = require("../models");
 
 router.post(
@@ -108,6 +109,65 @@ router.post(
       await transaction.rollback();
       throw new ExpressError("DB Rollback", 401);
     }
+  })
+);
+
+router.get(
+  "/",
+  wrapAsync(async (req, res) => {
+    const products = await Product.findAll({
+      attributes: ["id", "name"],
+      include: [
+        // product와 관련된 유저 정보 가지고 오기
+        {
+          model: User,
+          as: "user",
+          attributes: ["name"],
+        },
+
+        // product와 관련된 서브카테고리 정보 가지고 오기
+        {
+          model: SubCategory,
+          as: "subcategory",
+          attributes: ["id", "name", "categoryId"],
+          include: [
+            {
+              model: Category,
+              as: "category",
+              attributes: ["name"],
+            },
+          ],
+        },
+
+        // product와 관련된 사이즈 정보 가지고 오기
+        {
+          model: Size,
+          as: "sizes",
+          attributes: ["id", "size"],
+        },
+
+        // product와 관련된 taste 정보 가지고 오기
+        {
+          model: Taste,
+          attributes: ["name"],
+          as: "tastes",
+          through: {
+            attributes: [],
+          },
+        },
+
+        // product와 관련된 grinding정도 정보 가지고 오기
+        {
+          model: Grinding,
+          attributes: ["name"],
+          as: "grindings",
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    res.status(200).json(products);
   })
 );
 

@@ -46,3 +46,6 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
     "roastingDate" : "2023-01-01"
 }
 
+###
+GET http://localhost:3000/products
+
