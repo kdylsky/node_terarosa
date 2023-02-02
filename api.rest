@@ -30,7 +30,7 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 {
-    "category_name" : "식품",
+    "category_name" : "커피",
     "subcategory_name": "싱글오리진",
     "size_price":
         [{
