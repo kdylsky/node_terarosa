@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsToMany(models.Product, {
+        through: "product_grinding",
+        foreignKey: "grinding_id",
+        as: "products",
+      });
     }
   }
   Grinding.init(

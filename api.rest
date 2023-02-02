@@ -40,8 +40,8 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
             "size":"250g",
             "price":50000
         }],
-    "taste_name":"Apple",
-    "grinding_name":"드립",
+    "taste_name":["Apple", "Mango"],
+    "grinding_name":["드립"],
     "product_name" : "두번째 커피",
     "roastingDate" : "2023-01-01"
 }
