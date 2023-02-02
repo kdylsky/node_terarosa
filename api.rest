@@ -56,3 +56,5 @@ GET http://localhost:3000/products
 //특정상품 가지고 오기
 GET http://localhost:3000/products/1
 
+###
+DELETE  http://localhost:3000/products/3

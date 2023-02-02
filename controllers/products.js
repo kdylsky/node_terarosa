@@ -177,6 +177,12 @@ module.exports.RetriveProduct = async (req, res) => {
   res.status(200).json(products);
 };
 
-module.exports.EditProduct = async (req, res) => {
+module.exports.DeleteProduct = async (req, res) => {
   const { id } = req.params;
+  //삭제하게 되면 상품과 연관된 정보 역시 함께 지워야 한다.
+  //상품과 연관된 정보는 size테이블, product_taste테이블, product_grinding테이블
+  const deleteProduct = await Product.destroy({
+    where: { id: id },
+  });
+  res.status(200).json({ message: "Deleted Product" });
 };

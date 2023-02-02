@@ -24,5 +24,5 @@ const products = require("../controllers/products");
 router.post("/", isLogin, productValidation, wrapAsync(products.CreateProduct));
 router.get("/", wrapAsync(products.AllProduct));
 router.get("/:id", wrapAsync(products.RetriveProduct));
-router.patch("/:id", wrapAsync(products.EditProduct));
+router.delete("/:id", wrapAsync(products.DeleteProduct));
 module.exports = router;
