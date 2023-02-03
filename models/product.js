@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Size, {
         foreignKey: "productId",
         as: "sizes",
+        onDelete: "cascade",
+        hooks: true,
       });
       this.belongsToMany(models.Taste, {
         through: "product_taste",

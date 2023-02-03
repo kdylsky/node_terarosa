@@ -179,10 +179,28 @@ module.exports.RetriveProduct = async (req, res) => {
 
 module.exports.DeleteProduct = async (req, res) => {
   const { id } = req.params;
-  //삭제하게 되면 상품과 연관된 정보 역시 함께 지워야 한다.
-  //상품과 연관된 정보는 size테이블, product_taste테이블, product_grinding테이블
-  const deleteProduct = await Product.destroy({
-    where: { id: id },
-  });
-  res.status(200).json({ message: "Deleted Product" });
+  // 삭제하게 되면 상품과 연관된 정보 역시 함께 지워야 한다.
+  // 상품과 연관된 정보는 size테이블
+
+  const transaction = await sequelize.transaction();
+  try {
+    const deleteProduct = await Product.findOne({
+      where: { id: id },
+    });
+    await deleteProduct.destroy({ transaction: transaction });
+
+    await product_grinding.destroy({
+      where: { product_id: deleteProduct.id },
+      transaction: transaction,
+    });
+    await product_taste.destroy({
+      where: { product_id: deleteProduct.id },
+      transaction: transaction,
+    });
+    transaction.commit();
+    res.status(200).json({ message: "Deleted Product" });
+  } catch (error) {
+    transaction.rollback();
+    throw new ExpressError(error.message, 401);
+  }
 };

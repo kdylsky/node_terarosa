@@ -33,5 +33,8 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "product_grinding",
     }
   );
+  product_grinding.beforeBulkDestroy(() => {
+    console.log("product_grinding has been destroyed");
+  });
   return product_grinding;
 };
