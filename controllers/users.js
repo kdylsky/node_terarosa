@@ -9,7 +9,9 @@ module.exports.loginUser = async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findUserAndVaildate(username, password);
   if (!user) {
-    return console.log("username과 password를 다시 확인해 주세요!!");
+    return res
+      .status(400)
+      .json({ message: "username과 password를 다시 확인해 주세요!!" });
   }
   const token = user.makeToken();
   res.status(200).json({ message: "로그인에 성공했습니다.", token: token });

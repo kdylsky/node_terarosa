@@ -1,46 +1,49 @@
-"use strict";
-const { Model, SequelizeScopeError } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-  class Size extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      this.belongsTo(models.Product, {
-        foreignKey: "productID",
-        as: "_size",
-      });
-    }
-  }
-  Size.init(
-    {
-      size: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          isIn: {
-            args: [["100g", "250g", "500g"]],
-            msg: "100g, 250g, 500g 중 하나를 고르세요",
+const Sequelize = require("sequelize");
+
+class Size extends Sequelize.Model {
+  static init(sequelize) {
+    return super.init(
+      {
+        size: {
+          type: Sequelize.STRING(),
+          allowNull: false,
+          validate: {
+            isIn: {
+              args: [["100g", "250g", "500g"]],
+              msg: "100g, 250g, 500g 중 하나를 고르세요",
+            },
           },
         },
+        price: {
+          type: Sequelize.INTEGER(),
+          allowNull: false,
+        },
+        productId: {
+          type: Sequelize.INTEGER(),
+          allowNull: false,
+        },
       },
-      price: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      productId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-    },
-    {
-      sequelize,
-      tableName: "sizes",
-      modelName: "Size",
-    }
-  );
-  return Size;
-};
+      {
+        sequelize,
+        tableName: "sizes",
+        modelName: "Size",
+        timestamps: true,
+        paranoid: false,
+        underscored: false,
+      }
+    );
+  }
+  static associate(db) {
+    db.Size.belongsTo(db.Product, {
+      foreignKey: "productId",
+      targetKey: "id",
+      as: "products",
+      // userDetail도 없어도 될거 같다
+      // onDelete: "CASCADE",
+      // onUpdate: "CASCADE",
+      // hooks: true,
+    });
+  }
+}
+
+module.exports = Size;

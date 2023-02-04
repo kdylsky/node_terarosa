@@ -6,12 +6,12 @@ POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-    "name":"kim do yeon",
-    "username":"kdy",
-    "email":"kdy@gamil.com",
+    "name":"hong gil dong",
+    "username":"hgd",
+    "email":"hgd@gamil.com",
     "password":"password1",
     "address":"korea",
-    "phone_number":"010-0000-0000"
+    "phone_number":"010-1111-1111"
 }
 
 ###
@@ -19,10 +19,11 @@ POST http://localhost:3000/users/login
 Content-Type: application/json
 
 {
-    "username":"kdy",
+    "username":"hgd",
     "password":"password1"
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
 // 상품
 ###
 POST http://localhost:3000/products
@@ -54,7 +55,7 @@ GET http://localhost:3000/products
 
 ###
 //특정상품 가지고 오기
-GET http://localhost:3000/products/1
+GET http://localhost:3000/products/41
 
 ###
-DELETE  http://localhost:3000/products/31
+DELETE  http://localhost:3000/products/41

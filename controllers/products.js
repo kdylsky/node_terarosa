@@ -8,8 +8,6 @@ const {
   Grinding,
   Product,
   sequelize,
-  product_grinding,
-  product_taste,
   User,
 } = require("../models");
 
@@ -27,15 +25,10 @@ module.exports.CreateProduct = async (req, res) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const is_existed = async (modelName, params) => {
-      const [modelObject, created] = await modelName.findOrCreate({
-        where: { name: params },
-        transaction: transaction,
-      });
-      return modelObject;
-    };
-    const category = await is_existed(Category, category_name);
-
+    const [category, category_created] = await Category.findOrCreate({
+      where: { name: category_name },
+      transaction: transaction,
+    });
     const [subCategory, subcategory_created] = await SubCategory.findOrCreate({
       where: { name: subcategory_name, categoryId: category.id },
       transaction: transaction,
@@ -67,13 +60,7 @@ module.exports.CreateProduct = async (req, res) => {
         where: { name: taste },
         transaction: transaction,
       });
-      await product_taste.create(
-        {
-          product_id: product.id,
-          taste_id: taste_obj.id,
-        },
-        { transaction: transaction }
-      );
+      product.addTaste(taste_obj);
     }
 
     for (let grinding of grinding_name) {
@@ -81,15 +68,8 @@ module.exports.CreateProduct = async (req, res) => {
         where: { name: grinding },
         transaction: transaction,
       });
-      await product_grinding.create(
-        {
-          product_id: product.id,
-          grinding_id: grinding_obj.id,
-        },
-        { transaction: transaction }
-      );
+      product.addGrinding(grinding_obj);
     }
-
     await transaction.commit();
     res.json({ message: "상품이 등록되었습니다." });
   } catch (error) {
@@ -188,15 +168,6 @@ module.exports.DeleteProduct = async (req, res) => {
       where: { id: id },
     });
     await deleteProduct.destroy({ transaction: transaction });
-
-    await product_grinding.destroy({
-      where: { product_id: deleteProduct.id },
-      transaction: transaction,
-    });
-    await product_taste.destroy({
-      where: { product_id: deleteProduct.id },
-      transaction: transaction,
-    });
     transaction.commit();
     res.status(200).json({ message: "Deleted Product" });
   } catch (error) {

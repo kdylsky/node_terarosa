@@ -24,6 +24,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Tastes");
+    await queryInterface.dropTable("tastes");
   },
 };
