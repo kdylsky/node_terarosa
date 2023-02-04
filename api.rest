@@ -28,7 +28,7 @@ Content-Type: application/json
 ###
 POST http://localhost:3000/products
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
+Authorization: eyJhbGciOiJIUzI1NiJ9.aGdk.m8s6-WQB864eDn8GpU22BxQKl0mwOX_GDaXLYC_--oM
 
 {
     "category_name" : "커피",
@@ -55,7 +55,7 @@ GET http://localhost:3000/products
 
 ###
 //특정상품 가지고 오기
-GET http://localhost:3000/products/41
+GET http://localhost:3000/products/1
 
 ###
-DELETE  http://localhost:3000/products/41
+DELETE  http://localhost:3000/products/3

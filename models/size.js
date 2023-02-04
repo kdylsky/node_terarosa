@@ -21,6 +21,10 @@ class Size extends Sequelize.Model {
         productId: {
           type: Sequelize.INTEGER(),
           allowNull: false,
+          references: {
+            model: Sequelize.Product,
+            key: "id",
+          },
         },
       },
       {
@@ -38,10 +42,11 @@ class Size extends Sequelize.Model {
       foreignKey: "productId",
       targetKey: "id",
       as: "products",
-      // userDetail도 없어도 될거 같다
       // onDelete: "CASCADE",
       // onUpdate: "CASCADE",
       // hooks: true,
+      onDelete: "cascade",
+      hooks: true,
     });
   }
 }

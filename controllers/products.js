@@ -164,10 +164,12 @@ module.exports.DeleteProduct = async (req, res) => {
 
   const transaction = await sequelize.transaction();
   try {
-    const deleteProduct = await Product.findOne({
+    const deleteProduct = await Product.destroy({
       where: { id: id },
+      transaction: transaction,
     });
-    await deleteProduct.destroy({ transaction: transaction });
+    console.log(deleteProduct);
+    // await deleteProduct.destroy({ transaction: transaction });
     transaction.commit();
     res.status(200).json({ message: "Deleted Product" });
   } catch (error) {
