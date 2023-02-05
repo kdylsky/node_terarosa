@@ -177,3 +177,87 @@ module.exports.DeleteProduct = async (req, res) => {
     throw new ExpressError(error.message, 401);
   }
 };
+
+module.exports.EditAddOptionProduct = async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findByPk(id);
+  const { size_price, taste_name, grinding_name } = req.body;
+
+  const transaction = await sequelize.transaction();
+  try {
+    if (size_price) {
+      for (let i of size_price) {
+        const [size, sizeCreated] = await Size.findOrCreate({
+          where: { size: i["size"], productId: product.id },
+          defaults: { price: i["price"] },
+          transaction: transaction,
+        });
+        if (!sizeCreated) {
+          size.price = i["price"];
+        }
+        await size.save();
+      }
+    }
+
+    if (taste_name) {
+      for (let taste of taste_name) {
+        let [taste_obj, taste_flag] = await Taste.findOrCreate({
+          where: { name: taste },
+          transaction: transaction,
+        });
+        product.addTaste(taste_obj);
+      }
+    }
+
+    if (grinding_name) {
+      for (let grinding of grinding_name) {
+        let [grinding_obj, grinding_flag] = await Grinding.findOrCreate({
+          where: { name: grinding },
+          transaction: transaction,
+        });
+        product.addGrinding(grinding_obj);
+      }
+    }
+    await transaction.commit();
+    res.status(200).json({ message: "Edit Product Option" });
+  } catch (error) {
+    await transaction.rollback();
+    res.status(400).json(error.message);
+  }
+};
+
+module.exports.EditDeleteOptionProduct = async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findByPk(id);
+  const { size_price, taste_name, grinding_name } = req.body;
+  const transaction = await sequelize.transaction();
+
+  try {
+    if (size_price) {
+      size_price.forEach((element) => {
+        Size.destroy({ where: { size: element.size, productId: product.id } });
+      });
+    }
+    if (taste_name) {
+      for (let taste of taste_name) {
+        let taste_obj = await Taste.findOne({
+          where: { name: taste },
+        });
+        product.removeTastes(taste_obj);
+      }
+    }
+    if (grinding_name) {
+      for (let grinding of grinding_name) {
+        let grinding_obj = await Grinding.findOne({
+          where: { name: grinding },
+        });
+        product.removeGrinding(grinding_obj);
+      }
+    }
+    transaction.commit();
+    res.status(200).json({ message: "Delete Product Option" });
+  } catch (error) {
+    transaction.rollback();
+    res.status(400).json(error.message);
+  }
+};

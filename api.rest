@@ -58,5 +58,35 @@ GET http://localhost:3000/products
 GET http://localhost:3000/products/1
 
 ###
-DELETE  http://localhost:3000/products/5
-Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
+DELETE  http://localhost:3000/products/6
+Authorization: eyJhbGciOiJIUzI1NiJ9.aGdk.m8s6-WQB864eDn8GpU22BxQKl0mwOX_GDaXLYC_--oM
+
+
+###
+PATCH  http://localhost:3000/products/7/edit/add
+Content-Type: application/json
+
+{
+    "size_price":
+        [{
+            "size":"100g",
+            "price":100000
+        },{
+            "size":"250g",
+            "price":200000
+        },{
+            "size":"500g",
+            "price":300000
+        }],
+    "taste_name":["Peach"],
+    "grinding_name":["모카포트"]    
+}   
+
+###
+PATCH  http://localhost:3000/products/7/edit/delete
+Content-Type: application/json
+
+{
+    "taste_name":["Apple"],
+    "grinding_name":["모카포트"]    
+}

@@ -55,3 +55,28 @@ module.exports.productCreateSchema = Joi.object({
   product_name: Joi.string().not("").required(),
   roastingDate: Joi.date().iso().required(),
 }).options({ abortEarly: false });
+
+module.exports.productEditSchema = Joi.object({
+  size_price: Joi.array().items(
+    Joi.object({
+      size: Joi.only().allow("100g", "250g", "500g").required(),
+      price: Joi.number().required(),
+    }).optional()
+  ),
+  taste_name: Joi.array()
+    .items(
+      Joi.string()
+        .only()
+        .allow("Apple", "Mango", "Grape", "Banana", "Peach")
+        .required()
+    )
+    .optional(),
+  grinding_name: Joi.array()
+    .items(
+      Joi.string()
+        .only()
+        .allow("갈지않음", "에스프레소", "모카포트", "드립", "프렌치프레스")
+        .required()
+    )
+    .optional(),
+}).options({ abortEarly: false });
