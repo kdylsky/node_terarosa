@@ -6,12 +6,12 @@ POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-    "name":"hong gil dong",
-    "username":"hgd",
-    "email":"hgd@gamil.com",
+    "name":"kim do yeon",
+    "username":"kdy",
+    "email":"kdy@gamil.com",
     "password":"password1",
     "address":"korea",
-    "phone_number":"010-1111-1111"
+    "phone_number":"010-2222-2222"
 }
 
 ###
@@ -19,7 +19,7 @@ POST http://localhost:3000/users/login
 Content-Type: application/json
 
 {
-    "username":"hgd",
+    "username":"kdy",
     "password":"password1"
 }
 
@@ -58,4 +58,5 @@ GET http://localhost:3000/products
 GET http://localhost:3000/products/1
 
 ###
-DELETE  http://localhost:3000/products/3
+DELETE  http://localhost:3000/products/5
+Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM

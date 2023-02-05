@@ -1,6 +1,6 @@
 const wrapAsync = require("../utils/wrapAsync");
 const jwt = require("jsonwebtoken");
-const { User } = require("../models/index");
+const { User, Product } = require("../models/index");
 
 module.exports.isLogin = wrapAsync(async (req, res, next) => {
   const token = req.headers.authorization;
@@ -17,5 +17,19 @@ module.exports.isLogin = wrapAsync(async (req, res, next) => {
     });
   }
   res.locals.currentUser = user;
+  next();
+});
+
+module.exports.isAuthor = wrapAsync(async (req, res, next) => {
+  const user = res.locals.currentUser;
+  const { id } = req.params;
+  const product = await Product.findByPk(id);
+  if (!product) {
+    return res.status(401).json({ message: "상품을 다시 확인해주세요" });
+  }
+
+  if (product.userId !== user.id) {
+    return res.status(401).json({ message: "허용된 사용자가 아닙니다." });
+  }
   next();
 });
