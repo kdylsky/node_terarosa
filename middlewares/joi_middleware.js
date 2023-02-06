@@ -3,6 +3,7 @@ const {
   userLoginSchema,
   productCreateSchema,
   productEditSchema,
+  cartCreateSchema,
 } = require("../joiSchema");
 const ExpressError = require("../utils/ExpressError");
 
@@ -38,6 +39,16 @@ module.exports.productValidation = (req, res, next) => {
 
 module.exports.productEditValidation = (req, res, next) => {
   const { error } = productEditSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+module.exports.cartCreateValidation = (req, res, next) => {
+  const { error } = cartCreateSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(msg, 400);

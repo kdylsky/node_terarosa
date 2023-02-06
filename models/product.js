@@ -54,7 +54,7 @@ class Product extends Sequelize.Model {
     });
 
     db.Product.hasMany(db.Cart, {
-      foreignKey: "producId",
+      foreignKey: "productId",
       sourceKey: "id",
       as: "carts",
     });

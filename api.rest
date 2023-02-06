@@ -86,7 +86,42 @@ Content-Type: application/json
 PATCH  http://localhost:3000/products/7/edit/delete
 Content-Type: application/json
 
-{
+{   
+    "size_price":
+        [{
+            "size":"100g",
+            "price":100000
+        }],
     "taste_name":["Apple"],
     "grinding_name":["모카포트"]    
+}
+
+
+// CART
+////////////////////////
+###
+//카트 리스트 가지고 오기
+GET http://localhost:3000/carts
+Authorization: eyJhbGciOiJIUzI1NiJ9.aGdk.m8s6-WQB864eDn8GpU22BxQKl0mwOX_GDaXLYC_--oM
+
+
+//카트 생성하기
+###
+POST http://localhost:3000/carts/7
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.aGdk.m8s6-WQB864eDn8GpU22BxQKl0mwOX_GDaXLYC_--oM
+
+{
+    "items":[
+        {
+            "quantity":"1",
+            "size":"100g",
+            "grinding":"갈지않음"
+        },
+        {
+            "quantity":"1",
+            "size":"250g",
+            "grinding":"갈지않음"
+        }
+    ]
 }
