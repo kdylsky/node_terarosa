@@ -8,6 +8,7 @@ const Size = require("./size");
 const Taste = require("./taste");
 const Grinding = require("./grinding");
 const Product = require("./product");
+const Cart = require("./cart");
 
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.js")[env];
@@ -33,6 +34,7 @@ db.Size = Size;
 db.Taste = Taste;
 db.Grinding = Grinding;
 db.Product = Product;
+db.Cart = Cart;
 
 // 모델과 테이블 종합적인 연결이 설정된다.
 User.init(sequelize);
@@ -42,6 +44,7 @@ Size.init(sequelize);
 Taste.init(sequelize);
 Grinding.init(sequelize);
 Product.init(sequelize);
+Cart.init(sequelize);
 
 // db객체 안에 있는 모델들 간의 관계가 설정된다.
 User.associate(db);
@@ -51,6 +54,7 @@ Size.associate(db);
 Taste.associate(db);
 Grinding.associate(db);
 Product.associate(db);
+Cart.associate(db);
 
 // 모듈로 꺼낸다.
 module.exports = db;

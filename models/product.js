@@ -53,6 +53,12 @@ class Product extends Sequelize.Model {
       //hooks:true
     });
 
+    db.Product.hasMany(db.Cart, {
+      foreignKey: "producId",
+      sourceKey: "id",
+      as: "carts",
+    });
+
     db.Product.belongsToMany(db.Taste, {
       through: "ProductTaste",
       foreignKey: "productId",

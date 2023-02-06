@@ -115,6 +115,12 @@ class User extends Sequelize.Model {
       // onUpdate: "CASCADE",
       hooks: true,
     });
+    db.User.hasMany(db.Cart, {
+      foreignKey: "userId",
+      sourceKey: "id",
+      as: "carts",
+      hooks: true,
+    });
   }
 }
 
