@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use("/users", userRouter);
 app.use("/products", productRouter);
-app.use("/carts", cartRouter);
+app.use("/carts/:username", cartRouter);
 
 app.use((err, req, res, next) => {
   const { status = 500 } = err;

@@ -2,8 +2,9 @@ const { Cart, Product } = require("../models");
 
 module.exports.listCarts = async (req, res) => {
   const user = res.locals.currentUser;
+  const { username } = req.params;
   const carts = await Cart.findAll({
-    where: { userId: user.id },
+    where: { userId: user.id, userName: username },
   });
   res.status(200).json(carts);
 };
@@ -28,15 +29,17 @@ module.exports.createCarts = async (req, res) => {
         productId: product_id,
         grinding: item.grinding,
         size: item.size,
+        userName: res.locals.currentUser.username,
       },
       defaults: {
         quantity: item.quantity,
       },
     });
-
+    console.log(cartCreated);
     if (!cartCreated) {
-      carts.quantity += item.quantity;
+      carts.quantity += parseInt(item.quantity);
     }
+    await carts.save();
   }
   res.status(201).json({ message: "카트에 상품이 추가되었습니다." });
 };

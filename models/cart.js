@@ -32,6 +32,10 @@ class Cart extends Sequelize.Model {
           type: Sequelize.STRING(),
           allowNull: false,
         },
+        userName: {
+          type: Sequelize.STRING(),
+          allowNull: false,
+        },
         // 가상 속성 만들기
         totalPrice: {
           type: Sequelize.VIRTUAL(),

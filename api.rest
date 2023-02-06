@@ -6,12 +6,12 @@ POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-    "name":"kim do yeon",
-    "username":"kdy",
-    "email":"kdy@gamil.com",
+    "name":"lee do yeon",
+    "username":"ldy",
+    "email":"ldy@gamil.com",
     "password":"password1",
     "address":"korea",
-    "phone_number":"010-2222-2222"
+    "phone_number":"010-3333-3333"
 }
 
 
@@ -21,7 +21,7 @@ POST http://localhost:3000/users/login
 Content-Type: application/json
 
 {
-    "username":"kdy",
+    "username":"ldy",
     "password":"password1"
 }
 
@@ -67,7 +67,7 @@ GET http://localhost:3000/products/1
 
 
 ### 특정상품삭제하기
-DELETE  http://localhost:3000/products/1
+DELETE  http://localhost:3000/products/2
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 
@@ -117,16 +117,16 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
 
 ###
 // 장바구니 전체리스트
-GET http://localhost:3000/carts
-Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
+GET http://localhost:3000/carts/kdy
+Authorization: eyJhbGciOiJIUzI1NiJ9.bGR5.52hpg9uRII0cFL3crlnx6y_u_5V-T08G_B3rdNR3QyY
 
 
 
 ###
 // 장바구니 생성하기
-POST http://localhost:3000/carts/1
+POST http://localhost:3000/carts/kdy/3
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
+Authorization: eyJhbGciOiJIUzI1NiJ9.bGR5.52hpg9uRII0cFL3crlnx6y_u_5V-T08G_B3rdNR3QyY
 
 {
     "items":[
@@ -147,14 +147,14 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
 
 ###
 // 장바구니 옵션 수정하기
-PATCH  http://localhost:3000/carts?productId=7&size=100g&quantity=10
+PATCH  http://localhost:3000/carts/kdy?productId=3&size=100g&quantity=10
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
+Authorization: eyJhbGciOiJIUzI1NiJ9.bGR5.52hpg9uRII0cFL3crlnx6y_u_5V-T08G_B3rdNR3QyY
 
 
 
 ###
 // 장바구니 삭제하기
-DELETE  http://localhost:3000/carts?productId=7&productId=9
+DELETE  http://localhost:3000/carts/kdy?productId=7&productId=9
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
+Authorization: eyJhbGciOiJIUzI1NiJ9.bGR5.52hpg9uRII0cFL3crlnx6y_u_5V-T08G_B3rdNR3QyY

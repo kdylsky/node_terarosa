@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { isLogin, isAuthor } = require("../middlewares/auth_middleware");
+const { isLogin, isProductAuthor } = require("../middlewares/auth_middleware");
 const {
   productValidation,
   productEditValidation,
@@ -12,18 +12,23 @@ const products = require("../controllers/products");
 router.post("/", isLogin, productValidation, wrapAsync(products.CreateProduct));
 router.get("/", wrapAsync(products.AllProduct));
 router.get("/:id", wrapAsync(products.RetriveProduct));
-router.delete("/:id", isLogin, isAuthor, wrapAsync(products.DeleteProduct));
+router.delete(
+  "/:id",
+  isLogin,
+  isProductAuthor,
+  wrapAsync(products.DeleteProduct)
+);
 router.patch(
   "/:id/edit/add",
   isLogin,
-  isAuthor,
+  isProductAuthor,
   productEditValidation,
   wrapAsync(products.EditAddOptionProduct)
 );
 router.patch(
   "/:id/edit/delete",
   isLogin,
-  isAuthor,
+  isProductAuthor,
   productEditValidation,
   wrapAsync(products.EditDeleteOptionProduct)
 );
