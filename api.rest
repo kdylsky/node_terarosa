@@ -1,7 +1,7 @@
-//유저
-GET http://localhost:3000/users
-
-###
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////유저 API//////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+// 회원가입
 POST http://localhost:3000/users/signup
 Content-Type: application/json
 
@@ -14,7 +14,9 @@ Content-Type: application/json
     "phone_number":"010-2222-2222"
 }
 
+
 ###
+// 로그인
 POST http://localhost:3000/users/login
 Content-Type: application/json
 
@@ -24,11 +26,14 @@ Content-Type: application/json
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// 상품
+////////////////////////////////////////상품 API//////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
 ###
+// 상품등록하기
 POST http://localhost:3000/products
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.aGdk.m8s6-WQB864eDn8GpU22BxQKl0mwOX_GDaXLYC_--oM
+Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 {
     "category_name" : "커피",
@@ -48,23 +53,29 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.aGdk.m8s6-WQB864eDn8GpU22BxQKl0mwOX_GDaXLYC_
 }
 
 
+
 ###
-//전체상품 가지고 오기
+// 전체상품리스트
 GET http://localhost:3000/products
 
 
+
 ###
-//특정상품 가지고 오기
+// 특정상품정보
 GET http://localhost:3000/products/1
 
-###
-DELETE  http://localhost:3000/products/6
-Authorization: eyJhbGciOiJIUzI1NiJ9.aGdk.m8s6-WQB864eDn8GpU22BxQKl0mwOX_GDaXLYC_--oM
 
 
-###
+### 특정상품삭제하기
+DELETE  http://localhost:3000/products/1
+Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
+
+
+
+### 특정상품옵션수정및추가하기
 PATCH  http://localhost:3000/products/7/edit/add
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 {
     "size_price":
@@ -82,9 +93,12 @@ Content-Type: application/json
     "grinding_name":["모카포트"]    
 }   
 
-###
+
+
+### 특정상품옵셥삭제하기
 PATCH  http://localhost:3000/products/7/edit/delete
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 {   
     "size_price":
@@ -97,31 +111,50 @@ Content-Type: application/json
 }
 
 
-// CART
-////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////장바구니 API///////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
 ###
-//카트 리스트 가지고 오기
+// 장바구니 전체리스트
 GET http://localhost:3000/carts
-Authorization: eyJhbGciOiJIUzI1NiJ9.aGdk.m8s6-WQB864eDn8GpU22BxQKl0mwOX_GDaXLYC_--oM
+Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 
-//카트 생성하기
+
 ###
-POST http://localhost:3000/carts/7
+// 장바구니 생성하기
+POST http://localhost:3000/carts/1
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.aGdk.m8s6-WQB864eDn8GpU22BxQKl0mwOX_GDaXLYC_--oM
+Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 {
     "items":[
         {
             "quantity":"1",
             "size":"100g",
-            "grinding":"갈지않음"
+            "grinding":"드립"
         },
         {
             "quantity":"1",
             "size":"250g",
-            "grinding":"갈지않음"
+            "grinding":"드립"
         }
     ]
 }
+
+
+
+###
+// 장바구니 옵션 수정하기
+PATCH  http://localhost:3000/carts?productId=7&size=100g&quantity=10
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
+
+
+
+###
+// 장바구니 삭제하기
+DELETE  http://localhost:3000/carts?productId=7&productId=9
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM

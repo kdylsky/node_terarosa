@@ -12,4 +12,7 @@ router.post(
   isLogin,
   wrapAsync(carts.createCarts)
 );
+router.patch("/", isLogin, wrapAsync(carts.editCarts));
+router.delete("/", isLogin, wrapAsync(carts.deleteCarts));
+
 module.exports = router;

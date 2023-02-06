@@ -40,3 +40,31 @@ module.exports.createCarts = async (req, res) => {
   }
   res.status(201).json({ message: "카트에 상품이 추가되었습니다." });
 };
+
+module.exports.editCarts = async (req, res) => {
+  const { productId, size, quantity } = req.query;
+  const cart = await Cart.findOne({
+    where: {
+      userId: res.locals.currentUser.id,
+      size: size,
+      productId: productId,
+    },
+  });
+  cart.quantity += parseInt(quantity);
+  if (cart.quantity <= 0) {
+    cart.quantity = 1;
+  }
+  await cart.save();
+  res.json(cart);
+};
+
+module.exports.deleteCarts = async (req, res) => {
+  const { productId } = req.query;
+
+  for (let id of productId) {
+    Cart.destroy({
+      where: { userId: res.locals.currentUser.id, productId: id },
+    });
+  }
+  res.status(200).json({ message: "Delete Cart" });
+};

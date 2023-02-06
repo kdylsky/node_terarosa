@@ -13,7 +13,7 @@ class Cart extends Sequelize.Model {
           },
         },
         productId: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.INTEGER(),
           allowNull: false,
           references: {
             model: Sequelize.Product,
@@ -32,6 +32,10 @@ class Cart extends Sequelize.Model {
           type: Sequelize.STRING(),
           allowNull: false,
         },
+        // 가상 속성 만들기
+        totalPrice: {
+          type: Sequelize.VIRTUAL(),
+        },
       },
       {
         sequelize,
@@ -40,6 +44,19 @@ class Cart extends Sequelize.Model {
         timestamps: true /* true : 각각 레코드가 생성, 수정될 때의 시간이 자동으로 입력된다. */,
         underscored: false /* 카멜 표기법을 스네이크 표기법으로 바꾸는 옵션 */,
         paranoid: false /* true : deletedAt이라는 컬럼이 생기고 지운 시각이 기록된다. */,
+        hooks: {
+          afterFind: async (record, options) => {
+            if (Array.isArray(record)) {
+              for (let cart of record) {
+                let product = await cart.getProduct();
+                let size = await product.getSizes({
+                  where: { size: cart.size },
+                });
+                cart.totalPrice = size[0].price * cart.quantity;
+              }
+            }
+          },
+        },
       }
     );
   }
@@ -49,14 +66,15 @@ class Cart extends Sequelize.Model {
       foreignKey: "userId",
       targetKey: "id",
       as: "user",
-      ondelete: "cascade",
+      onDelete: "cascade",
     });
 
     db.Cart.belongsTo(db.Product, {
       foreignKey: "productId",
       targetKey: "id",
       as: "product",
-      ondelete: "cascade",
+      onDelete: "cascade",
+      hooks: true,
     });
   }
 }

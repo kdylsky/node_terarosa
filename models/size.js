@@ -42,9 +42,6 @@ class Size extends Sequelize.Model {
       foreignKey: "productId",
       targetKey: "id",
       as: "products",
-      // onDelete: "CASCADE",
-      // onUpdate: "CASCADE",
-      // hooks: true,
       onDelete: "cascade",
       hooks: true,
     });
