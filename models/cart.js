@@ -40,6 +40,19 @@ class Cart extends Sequelize.Model {
         totalPrice: {
           type: Sequelize.VIRTUAL(),
         },
+        // totlaPrice: {
+        //   type: Sequelize.VIRTUAL(),
+        //   async get(value) {
+        //     const products = await this.getProduct({});
+        //     const sizes = await products.getSizes({
+        //       where: { size: this.size },
+        //     });
+        //     return sizes[0].price * this.quantity;
+        //   },
+        //   set(value) {
+        //     throw new Error("Do not try to set the `fullName` value!");
+        //   },
+        // },
       },
       {
         sequelize,

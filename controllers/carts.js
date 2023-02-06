@@ -35,7 +35,6 @@ module.exports.createCarts = async (req, res) => {
         quantity: item.quantity,
       },
     });
-    console.log(cartCreated);
     if (!cartCreated) {
       carts.quantity += parseInt(item.quantity);
     }
@@ -58,7 +57,7 @@ module.exports.editCarts = async (req, res) => {
     cart.quantity = 1;
   }
   await cart.save();
-  res.json(cart);
+  res.status(200).json(cart);
 };
 
 module.exports.deleteCarts = async (req, res) => {

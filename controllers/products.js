@@ -168,7 +168,6 @@ module.exports.DeleteProduct = async (req, res) => {
       where: { id: id },
       transaction: transaction,
     });
-    console.log(deleteProduct);
     // await deleteProduct.destroy({ transaction: transaction });
     transaction.commit();
     res.status(200).json({ message: "Deleted Product" });
@@ -239,20 +238,10 @@ module.exports.EditDeleteOptionProduct = async (req, res) => {
       });
     }
     if (taste_name) {
-      for (let taste of taste_name) {
-        let taste_obj = await Taste.findOne({
-          where: { name: taste },
-        });
-        product.removeTastes(taste_obj);
-      }
+      product.findAndDelete(taste_name, Taste);
     }
     if (grinding_name) {
-      for (let grinding of grinding_name) {
-        let grinding_obj = await Grinding.findOne({
-          where: { name: grinding },
-        });
-        product.removeGrinding(grinding_obj);
-      }
+      product.findAndDelete(grinding_name, Grinding);
     }
     transaction.commit();
     res.status(200).json({ message: "Delete Product Option" });

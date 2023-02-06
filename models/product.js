@@ -1,4 +1,6 @@
 const Sequelize = require("sequelize");
+const Taste = require("./taste");
+const Grinding = require("./grinding");
 
 class Product extends Sequelize.Model {
   static init(sequelize) {
@@ -30,6 +32,19 @@ class Product extends Sequelize.Model {
         paranoid: false /* true : deletedAt이라는 컬럼이 생기고 지운 시각이 기록된다. */,
       }
     );
+  }
+
+  async findAndDelete(req_lists, Model) {
+    for (let item of req_lists) {
+      let item_obj = await Model.findOne({
+        where: { name: item },
+      });
+      if (Model === Grinding) {
+        this.removeGrinding(item_obj);
+      } else if (Model === Taste) {
+        this.removeTastes(item_obj);
+      }
+    }
   }
 
   static associate(db) {
