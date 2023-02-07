@@ -10,4 +10,6 @@ const { isLogin } = require("../middlewares/auth_middleware");
 const orders = require("../controllers/orders");
 
 router.get("/", isLogin, wrapAsync(orders.listOrder));
+router.post("/", isLogin, wrapAsync(orders.createOrder));
+router.get("/:id", isLogin, wrapAsync(orders.retriveOrder));
 module.exports = router;

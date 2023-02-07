@@ -19,6 +19,7 @@ class Order extends Sequelize.Model {
               msg: "[결제전, 결제완료, 배송 준비중, 배송중, 배송완료 중 하나를 고르세요",
             },
           },
+          defaultValue: "결제전",
         },
       },
       {

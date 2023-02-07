@@ -43,7 +43,16 @@ class OrderItem extends Sequelize.Model {
       }
     );
   }
-  static associate(db) {}
+  static associate(db) {
+    db.OrderItem.belongsTo(db.Product, {
+      foreignKey: "productId",
+      targetKey: "id",
+    });
+    db.OrderItem.belongsTo(db.Order, {
+      foreignKey: "orderId",
+      targetKey: "id",
+    });
+  }
 }
 
 module.exports = OrderItem;
