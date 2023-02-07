@@ -89,8 +89,8 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
             "size":"500g",
             "price":300000
         }],
-    "taste_name":["Banan"],
-    "grinding_name":[""]    
+    "taste_name":["Banana"],
+    "grinding_name":["에스프레소"]    
 }   
 
 
@@ -106,8 +106,8 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
             "size":"100g",
             "price":100000
         }],
-    "taste_name":["Peach"],
-    "grinding_name":["모카포트"]    
+    "taste_name":["Grape"],
+    "grinding_name":["에스프레소"]    
 }
 
 
@@ -158,3 +158,15 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.bGR5.52hpg9uRII0cFL3crlnx6y_u_5V-T08G_B3rdNR
 DELETE  http://localhost:3000/carts/kdy?productId=7&productId=9
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.bGR5.52hpg9uRII0cFL3crlnx6y_u_5V-T08G_B3rdNR3QyY
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////주문 API//////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+###
+// 유저의 주문 전체리스트
+GET   http://localhost:3000/orders
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.bGR5.52hpg9uRII0cFL3crlnx6y_u_5V-T08G_B3rdNR3QyY
+
+

@@ -65,12 +65,18 @@ class Cart extends Sequelize.Model {
           afterFind: async (record, options) => {
             if (Array.isArray(record)) {
               for (let cart of record) {
-                let product = await cart.getProduct();
-                let size = await product.getSizes({
+                console.log(cart.size);
+                const product = await cart.getProduct();
+                const size = await product.getSizes({
                   where: { size: cart.size },
                 });
                 cart.totalPrice = size[0].price * cart.quantity;
               }
+            } else {
+              const product = await record.getProduct();
+              const size = await product.getSizes({});
+
+              record.totalPrice = size[0].price * record.quantity;
             }
           },
         },

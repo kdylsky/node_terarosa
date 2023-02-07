@@ -3,9 +3,11 @@ const { Cart, Product } = require("../models");
 module.exports.listCarts = async (req, res) => {
   const user = res.locals.currentUser;
   const { username } = req.params;
+
   const carts = await Cart.findAll({
     where: { userId: user.id, userName: username },
   });
+
   res.status(200).json(carts);
 };
 

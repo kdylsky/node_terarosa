@@ -4,12 +4,14 @@ const { sequelize } = require("./models");
 const userRouter = require("./routers/users");
 const productRouter = require("./routers/products");
 const cartRouter = require("./routers/carts");
+const orderRouter = require("./routers/orders");
 
 app.use(express.json());
 
 app.use("/users", userRouter);
 app.use("/products", productRouter);
 app.use("/carts/:username", cartRouter);
+app.use("/orders", orderRouter);
 
 app.use((err, req, res, next) => {
   const { status = 500 } = err;
