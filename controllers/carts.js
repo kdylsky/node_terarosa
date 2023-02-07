@@ -2,8 +2,9 @@ const { Cart, Product } = require("../models");
 
 module.exports.listCarts = async (req, res) => {
   const user = res.locals.currentUser;
+  console.log(user);
   const { username } = req.params;
-
+  console.log(username);
   const carts = await Cart.findAll({
     where: { userId: user.id, userName: username },
   });

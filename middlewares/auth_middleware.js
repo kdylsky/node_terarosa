@@ -37,8 +37,8 @@ module.exports.isProductAuthor = wrapAsync(async (req, res, next) => {
 module.exports.isCartAuthor = wrapAsync(async (req, res, next) => {
   const user = res.locals.currentUser;
   const { username } = req.params;
-  const carts = await Cart.findOne({ where: { userName: username } });
-  if (user.id !== carts.userId) {
+  const carts = await Cart.findAll({ where: { userName: username } });
+  if (user.username !== username) {
     return res.status(401).json({ message: "허용된 사용자가 아닙니다." });
   }
   next();
