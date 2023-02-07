@@ -8,9 +8,17 @@ class Order extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        statusId: {
-          type: Sequelize.INTEGER,
+        orderStatus: {
+          type: Sequelize.STRING,
           allowNull: false,
+          validate: {
+            isIn: {
+              args: [
+                ["결제전", "결제완료", "배송준비중", "배송중", "배송완료"],
+              ],
+              msg: "[결제전, 결제완료, 배송 준비중, 배송중, 배송완료 중 하나를 고르세요",
+            },
+          },
         },
       },
       {
@@ -29,12 +37,6 @@ class Order extends Sequelize.Model {
       foreignKey: "userId",
       targetKey: "id",
       as: "user",
-      onDelete: "cascade",
-    });
-    db.Order.belongsTo(db.Status, {
-      foreignKey: "statusId",
-      targetKey: "id",
-      as: "status",
       onDelete: "cascade",
     });
     db.Order.belongsToMany(db.Product, {

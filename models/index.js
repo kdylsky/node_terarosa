@@ -11,7 +11,6 @@ const Product = require("./product");
 const Cart = require("./cart");
 const Order = require("./order");
 const OrderItem = require("./orderitem");
-const Status = require("./status");
 
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.js")[env];
@@ -40,7 +39,6 @@ db.Product = Product;
 db.Cart = Cart;
 db.Order = Order;
 db.OrderItem = OrderItem;
-db.Status = Status;
 
 // 모델과 테이블 종합적인 연결이 설정된다.
 User.init(sequelize);
@@ -53,7 +51,6 @@ Product.init(sequelize);
 Cart.init(sequelize);
 Order.init(sequelize);
 OrderItem.init(sequelize);
-Status.init(sequelize);
 
 // db객체 안에 있는 모델들 간의 관계가 설정된다.
 User.associate(db);
@@ -66,7 +63,6 @@ Product.associate(db);
 Cart.associate(db);
 Order.associate(db);
 OrderItem.associate(db);
-Status.associate(db);
 
 // 모듈로 꺼낸다.
 module.exports = db;

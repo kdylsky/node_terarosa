@@ -13,8 +13,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      statusId: {
-        type: Sequelize.INTEGER,
+      orderStatus: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       createdAt: {
