@@ -1,4 +1,4 @@
-const { Order, Product, Size } = require("../models");
+const { Order, Product, Size, Grinding } = require("../models");
 
 module.exports.listOrder = async (req, res) => {
   const orders = await Order.findAll({
@@ -10,16 +10,21 @@ module.exports.listOrder = async (req, res) => {
 module.exports.retriveOrder = async (req, res) => {
   const { id } = req.params;
   const order = await Order.findByPk(id);
-  console.log(order);
-  const product = await order.getProducts({
-    include: [
-      {
-        model: Size,
-        as: "sizes",
-      },
-    ],
-  });
-  res.json(product);
+  const products = await order.getProducts({});
+  let items = [];
+  for (let product of products) {
+    const size = await Size.findByPk(product.OrderItem.size);
+    const grinding = await Grinding.findByPk(product.OrderItem.grinding);
+    let item = {
+      orderId: product.OrderItem.orderId,
+      size: size.size,
+      price: size.price,
+      grinding: grinding.name,
+      quantity: product.OrderItem.quantity,
+    };
+    items.push(item);
+  }
+  res.send(items);
 };
 
 module.exports.createOrder = async (req, res) => {
