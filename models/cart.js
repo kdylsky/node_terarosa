@@ -63,21 +63,21 @@ class Cart extends Sequelize.Model {
         paranoid: false /* true : deletedAt이라는 컬럼이 생기고 지운 시각이 기록된다. */,
         hooks: {
           afterFind: async (record, options) => {
-            if (Array.isArray(record)) {
-              for (let cart of record) {
-                console.log(cart.size);
-                const product = await cart.getProduct();
-                const size = await product.getSizes({
-                  where: { size: cart.size },
-                });
-                cart.totalPrice = size[0].price * cart.quantity;
-              }
-            } else {
-              const product = await record.getProduct();
-              const size = await product.getSizes({});
+            if (record)
+              if (Array.isArray(record)) {
+                for (let cart of record) {
+                  const product = await cart.getProduct();
+                  const size = await product.getSizes({
+                    where: { size: cart.size },
+                  });
+                  cart.totalPrice = size[0].price * cart.quantity;
+                }
+              } else {
+                const product = await record.getProduct();
+                const size = await product.getSizes({});
 
-              record.totalPrice = size[0].price * record.quantity;
-            }
+                record.totalPrice = size[0].price * record.quantity;
+              }
           },
         },
       }

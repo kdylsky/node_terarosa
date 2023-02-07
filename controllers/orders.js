@@ -41,9 +41,15 @@ module.exports.createOrder = async (req, res) => {
     for (item of req.body.orderItems) {
       const product = await Product.findByPk(item.product_id);
       const size = await product.getSizes({ where: { size: item.size } });
+      if (size.length <= 0) {
+        return res.status(400).json({ message: "잘못된 사이즈입니다." });
+      }
       const grinding = await product.getGrindings({
         where: { name: item.grinding },
       });
+      if (grinding.length <= 0) {
+        return res.status(400).json({ message: "잘못된 grinding입니다." });
+      }
       order.addProduct(
         product,
         {

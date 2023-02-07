@@ -190,7 +190,7 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
     },
     {
         "product_id": 2,
-        "size": "100g",
+        "size": "500g",
         "grinding":"에스프레소",
         "quantity":5
     }]
