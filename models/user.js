@@ -121,6 +121,12 @@ class User extends Sequelize.Model {
       as: "carts",
       hooks: true,
     });
+    db.User.hasMany(db.Order, {
+      foreignKey: "userId",
+      sourceKey: "id",
+      as: "orders",
+      hooks: true,
+    });
   }
 }
 

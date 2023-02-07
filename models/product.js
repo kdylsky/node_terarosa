@@ -85,6 +85,12 @@ class Product extends Sequelize.Model {
       foreignKey: "productId",
       as: "grindings",
     });
+
+    db.Product.belongsToMany(db.Order, {
+      through: db.OrderItem,
+      foreignKey: "productId",
+      as: "orders",
+    });
   }
 }
 

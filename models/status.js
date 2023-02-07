@@ -26,7 +26,14 @@ class Status extends Sequelize.Model {
     );
   }
 
-  static associate(db) {}
+  static associate(db) {
+    db.Status.hasMany(db.Order, {
+      foreignKey: "statusId",
+      sourceKey: "id",
+      as: "orders",
+      hooks: true,
+    });
+  }
 }
 
 module.exports = Status;

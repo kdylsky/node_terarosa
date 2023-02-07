@@ -7,10 +7,18 @@ class OrderItem extends Sequelize.Model {
         orderId: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          references: {
+            model: Sequelize.Order,
+            key: "id",
+          },
         },
         productId: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          references: {
+            model: Sequelize.Product,
+            key: "id",
+          },
         },
         size: {
           type: Sequelize.INTEGER,
@@ -37,3 +45,5 @@ class OrderItem extends Sequelize.Model {
   }
   static associate(db) {}
 }
+
+module.exports = OrderItem;

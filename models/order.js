@@ -23,6 +23,26 @@ class Order extends Sequelize.Model {
       }
     );
   }
+
+  static associate(db) {
+    db.Order.belongsTo(db.User, {
+      foreignKey: "userId",
+      targetKey: "id",
+      as: "user",
+      onDelete: "cascade",
+    });
+    db.Order.belongsTo(db.Status, {
+      foreignKey: "statusId",
+      targetKey: "id",
+      as: "status",
+      onDelete: "cascade",
+    });
+    db.Order.belongsToMany(db.Product, {
+      through: db.OrderItem,
+      foreignKey: "orderId",
+      as: "products",
+    });
+  }
 }
 
 module.exports = Order;
