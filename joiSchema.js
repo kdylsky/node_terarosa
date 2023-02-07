@@ -91,3 +91,15 @@ module.exports.cartCreateSchema = Joi.object({
       .required(),
   }),
 }).options({ abortEarly: false });
+
+module.exports.orderCreateSchema = Joi.object({
+  orderItems: Joi.array().items({
+    product_id: Joi.number().required(),
+    quantity: Joi.number().min(1).required(),
+    size: Joi.string().only().allow("100g", "250g", "500g").required(),
+    grinding: Joi.string()
+      .only()
+      .allow("갈지않음", "에스프레소", "모카포트", "드립", "프렌치프레스")
+      .required(),
+  }),
+}).options({ abortEarly: false });

@@ -20,13 +20,21 @@ class OrderItem extends Sequelize.Model {
             key: "id",
           },
         },
-        size: {
+        sizeId: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          references: {
+            model: Sequelize.Size,
+            key: "id",
+          },
         },
-        grinding: {
+        grindingId: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          references: {
+            model: Sequelize.Grinding,
+            key: "id",
+          },
         },
         quantity: {
           type: Sequelize.INTEGER,
@@ -50,6 +58,14 @@ class OrderItem extends Sequelize.Model {
     });
     db.OrderItem.belongsTo(db.Order, {
       foreignKey: "orderId",
+      targetKey: "id",
+    });
+    db.OrderItem.belongsTo(db.Size, {
+      foreignKey: "sizeId",
+      targetKey: "id",
+    });
+    db.OrderItem.belongsTo(db.Grinding, {
+      foreignKey: "grindingId",
       targetKey: "id",
     });
   }

@@ -45,6 +45,13 @@ class Size extends Sequelize.Model {
       onDelete: "cascade",
       hooks: true,
     });
+    db.Size.hasMany(db.OrderItem, {
+      foreignKey: "sizeId",
+      sourceKey: "id",
+      as: "orderitems",
+      //onDelete:"cascade",
+      //hooks:true
+    });
   }
 }
 

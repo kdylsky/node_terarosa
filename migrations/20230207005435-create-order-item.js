@@ -17,11 +17,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      size: {
+      sizeId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      grinding: {
+      grindingId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

@@ -33,6 +33,13 @@ class Grinding extends Sequelize.Model {
       foreignKey: "grindingId",
       as: "products",
     });
+    db.Grinding.hasMany(db.OrderItem, {
+      foreignKey: "grindingId",
+      sourceKey: "id",
+      as: "orderitems",
+      //onDelete:"cascade",
+      //hooks:true
+    });
   }
 }
 

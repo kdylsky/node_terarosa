@@ -41,14 +41,14 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
     "size_price":
         [{
             "size":"100g",
-            "price":10000
+            "price":30000
         },{
             "size":"250g",
-            "price":30000
+            "price":60000
         }],
-    "taste_name":["Apple", "Banana"],
-    "grinding_name":["드립"],
-    "product_name" : "네번째 커피",
+    "taste_name":["Grape", "Peach"],
+    "grinding_name":["에스프레소"],
+    "product_name" : "다섯번째 커피",
     "roastingDate" : "2023-02-02"
 }
 
@@ -171,7 +171,7 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
 
 ###
 // 유저의 주문 상세리스트
-GET   http://localhost:3000/orders/6
+GET   http://localhost:3000/orders/1
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
@@ -182,16 +182,16 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 {
-    "orderItem":[{
-        "product_id": 4,
-        "size": "100g",
-        "grinding":"드립",
-        "quantity":5
-    },
-    {
+    "orderItems":[{
         "product_id": 1,
         "size": "250g",
         "grinding":"드립",
+        "quantity":10
+    },
+    {
+        "product_id": 2,
+        "size": "100g",
+        "grinding":"에스프레소",
         "quantity":5
     }]
 }

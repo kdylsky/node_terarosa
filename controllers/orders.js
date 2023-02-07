@@ -1,4 +1,4 @@
-const { Order, Product, Size, Grinding } = require("../models");
+const { Order, Product, sequelize } = require("../models");
 
 module.exports.listOrder = async (req, res) => {
   const orders = await Order.findAll({
@@ -13,8 +13,8 @@ module.exports.retriveOrder = async (req, res) => {
   const products = await order.getProducts({});
   let items = [];
   for (let product of products) {
-    const size = await Size.findByPk(product.OrderItem.size);
-    const grinding = await Grinding.findByPk(product.OrderItem.grinding);
+    const size = await product.OrderItem.getSize();
+    const grinding = await product.OrderItem.getGrinding();
     let item = {
       orderId: product.OrderItem.orderId,
       size: size.size,
@@ -24,26 +24,42 @@ module.exports.retriveOrder = async (req, res) => {
     };
     items.push(item);
   }
-  res.send(items);
+  res.json(items);
 };
 
 module.exports.createOrder = async (req, res) => {
-  const order = await Order.create({
-    userId: res.locals.currentUser.id,
-  });
-  for (item of req.body.orderItems) {
-    const product = await Product.findByPk(item.product_id);
-    const size = await product.getSizes({ where: { size: item.size } });
-    const grinding = await product.getGrindings({
-      where: { name: item.grinding },
-    });
-    order.addProduct(product, {
-      through: {
-        size: size[0].id,
-        grinding: grinding[0].id,
-        quantity: item.quantity,
+  const transaction = await sequelize.transaction();
+  try {
+    const order = await Order.create(
+      {
+        userId: res.locals.currentUser.id,
       },
-    });
+      {
+        transaction: transaction,
+      }
+    );
+    for (item of req.body.orderItems) {
+      const product = await Product.findByPk(item.product_id);
+      const size = await product.getSizes({ where: { size: item.size } });
+      const grinding = await product.getGrindings({
+        where: { name: item.grinding },
+      });
+      order.addProduct(
+        product,
+        {
+          through: {
+            sizeId: size[0].id,
+            grindingId: grinding[0].id,
+            quantity: item.quantity,
+          },
+        },
+        { transaction: transaction }
+      );
+    }
+    transaction.commit();
+    res.status(200).json({ message: "주문이 완료 됬습니다." });
+  } catch (error) {
+    transaction.rollback();
+    return res.status(400).json(error.message);
   }
-  res.status(200).json({ message: "주문이 완료 됬습니다." });
 };
