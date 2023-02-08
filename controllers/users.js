@@ -14,5 +14,7 @@ module.exports.loginUser = async (req, res) => {
       .json({ message: "username과 password를 다시 확인해 주세요!!" });
   }
   const token = user.makeToken();
-  res.status(200).json({ message: "로그인에 성공했습니다.", token: token });
+  return res
+    .status(200)
+    .json({ message: "로그인에 성공했습니다.", token: token });
 };

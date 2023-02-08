@@ -14,14 +14,14 @@ class User extends Sequelize.Model {
           type: Sequelize.STRING(),
           unique: true,
           allowNull: false,
-          validate: {
-            async customValidator(value) {
-              const user = await User.findOne({ where: { username: value } });
-              if (user) {
-                throw new Error("이미 존재하는 유저이름입니다.");
-              }
-            },
-          },
+          // validate: {
+          //   async customValidator(value) {
+          //     const user = await User.findOne({ where: { username: value } });
+          //     if (user) {
+          //       throw new Error("이미 존재하는 유저이름입니다.");
+          //     }
+          //   },
+          // },
         },
         password: {
           type: Sequelize.STRING(),
@@ -35,29 +35,29 @@ class User extends Sequelize.Model {
           type: Sequelize.STRING(),
           unique: true,
           allowNull: false,
-          validate: {
-            async customValidator(value) {
-              const user = await User.findOne({ where: { email: value } });
-              if (user) {
-                throw new Error("이미 존재하는 이메일 주소입니다.");
-              }
-            },
-          },
+          // validate: {
+          //   async customValidator(value) {
+          //     const user = await User.findOne({ where: { email: value } });
+          //     if (user) {
+          //       throw new Error("이미 존재하는 이메일 주소입니다.");
+          //     }
+          //   },
+          // },
         },
         phone_number: {
           type: Sequelize.STRING(),
           unique: true,
           allowNull: false,
-          validate: {
-            async customValidator(value) {
-              const user = await User.findOne({
-                where: { phone_number: value },
-              });
-              if (user) {
-                throw new Error("이미 존재하는 핸드폰 번호입니다.");
-              }
-            },
-          },
+          // validate: {
+          //   async customValidator(value) {
+          //     const user = await User.findOne({
+          //       where: { phone_number: value },
+          //     });
+          //     if (user) {
+          //       throw new Error("이미 존재하는 핸드폰 번호입니다.");
+          //     }
+          //   },
+          // },
         },
       },
       // 여기까지가 필드에 대한 설정

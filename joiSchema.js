@@ -19,10 +19,7 @@ module.exports.userSignUpSchema = Joi.object({
 
 module.exports.userLoginSchema = Joi.object({
   username: Joi.string().not("").required(),
-  password: Joi.string()
-    .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)
-    .messages({ "string.pattern.base": `비밀번호 형식이 잘못 됬습니다.` })
-    .required(),
+  password: Joi.string().required(),
 }).options({ abortEarly: false });
 
 module.exports.productCreateSchema = Joi.object({

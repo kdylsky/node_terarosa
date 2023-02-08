@@ -1,4 +1,5 @@
 const ExpressError = require("../utils/ExpressError");
+const { findOrCreateReturnObject } = require("../utils/utils");
 
 const {
   Category,
@@ -25,15 +26,17 @@ module.exports.CreateProduct = async (req, res) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const [category, category_created] = await Category.findOrCreate({
-      where: { name: category_name },
-      transaction: transaction,
-    });
-    const [subCategory, subcategory_created] = await SubCategory.findOrCreate({
-      where: { name: subcategory_name, categoryId: category.id },
-      transaction: transaction,
-    });
-
+    const category = await findOrCreateReturnObject(
+      category_name,
+      Category,
+      transaction
+    );
+    const subCategory = await findOrCreateReturnObject(
+      subcategory_name,
+      SubCategory,
+      transaction,
+      category.id
+    );
     const product = await Product.create(
       {
         name: product_name,
@@ -43,7 +46,6 @@ module.exports.CreateProduct = async (req, res) => {
       },
       { transaction: transaction }
     );
-
     for (let i of size_price) {
       await Size.create(
         {
@@ -54,20 +56,20 @@ module.exports.CreateProduct = async (req, res) => {
         { transaction: transaction }
       );
     }
-
     for (let taste of taste_name) {
-      let [taste_obj, taste_flag] = await Taste.findOrCreate({
-        where: { name: taste },
-        transaction: transaction,
-      });
+      const taste_obj = await findOrCreateReturnObject(
+        taste,
+        Taste,
+        transaction
+      );
       product.addTaste(taste_obj);
     }
-
     for (let grinding of grinding_name) {
-      let [grinding_obj, grinding_flag] = await Grinding.findOrCreate({
-        where: { name: grinding },
-        transaction: transaction,
-      });
+      const grinding_obj = await findOrCreateReturnObject(
+        grinding,
+        Grinding,
+        transaction
+      );
       product.addGrinding(grinding_obj);
     }
     await transaction.commit();
@@ -80,7 +82,7 @@ module.exports.CreateProduct = async (req, res) => {
 
 module.exports.AllProduct = async (req, res) => {
   const products = await Product.findAll({
-    attributes: ["id", "name"],
+    attributes: ["id", "name", "roastingDate"],
     include: [
       // product와 관련된 서브카테고리 정보 가지고 오기
       {
@@ -94,6 +96,43 @@ module.exports.AllProduct = async (req, res) => {
             attributes: ["name"],
           },
         ],
+      },
+      {
+        model: Size,
+        as: "sizes",
+        attributes: ["size", "price"],
+      },
+    ],
+  });
+  res.status(200).json(products);
+};
+
+module.exports.CategoryProduct = async (req, res) => {
+  const { category_name } = req.params;
+  const subcategory = await SubCategory.findAll({
+    include: [
+      {
+        model: Category,
+        as: "category",
+        where: { name: category_name },
+      },
+    ],
+  });
+  const ids = [];
+  subcategory.map((element) => {
+    ids.push(element.id);
+  });
+
+  const products = await Product.findAll({
+    where: {
+      subCategoryId: ids,
+    },
+    attributes: ["id", "name", "roastingDate"],
+    include: [
+      {
+        model: Size,
+        as: "sizes",
+        attributes: ["size", "price"],
       },
     ],
   });

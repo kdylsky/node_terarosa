@@ -5,6 +5,7 @@ const userRouter = require("./routers/users");
 const productRouter = require("./routers/products");
 const cartRouter = require("./routers/carts");
 const orderRouter = require("./routers/orders");
+const ExpressError = require("./utils/ExpressError");
 
 app.use(express.json());
 
@@ -13,12 +14,16 @@ app.use("/products", productRouter);
 app.use("/carts/:username", cartRouter);
 app.use("/orders", orderRouter);
 
+app.all("*", (req, res, next) => {
+  next(new ExpressError("Page Not Found", 404));
+});
+
 app.use((err, req, res, next) => {
   const { status = 500 } = err;
   if (!err.message) {
     err.message = "Default Error Message";
   }
-  res.status(status).json({ message: err.message });
+  res.status(status).json({ name: err.name, message: err.message });
 });
 
 app.listen(3000, async () => {

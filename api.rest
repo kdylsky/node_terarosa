@@ -11,7 +11,7 @@ Content-Type: application/json
     "email":"kdy@gamil.com",
     "password":"password1",
     "address":"korea",
-    "phone_number":"010-1111-1111"
+    "phone_number":"010-0000-0000"
 }
 
 
@@ -58,6 +58,9 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
 // 전체상품리스트
 GET http://localhost:3000/products
 
+###
+// 카테고리별리스트
+GET http://localhost:3000/products/coffee
 
 
 ###
@@ -67,7 +70,7 @@ GET http://localhost:3000/products/1
 
 
 ### 특정상품삭제하기
-DELETE  http://localhost:3000/products/2
+DELETE  http://localhost:3000/products/1
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 
