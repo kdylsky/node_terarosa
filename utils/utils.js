@@ -1,3 +1,4 @@
+const { SubCategory, Category } = require("../models");
 const ExpressError = require("../utils/ExpressError");
 
 module.exports.findOrCreateReturnObject = async (
@@ -19,6 +20,26 @@ module.exports.findOrCreateReturnObject = async (
     });
     return obj;
   }
+};
+
+module.exports.findSubCategory = async (category_name) => {
+  const subcategory = await SubCategory.findAll({
+    include: [
+      {
+        model: Category,
+        as: "category",
+        where: { name: category_name },
+      },
+    ],
+  });
+  if (subcategory.length === 0) {
+    throw new ExpressError("상품이 존재하지 않습니다", 400);
+  }
+  ids = [];
+  subcategory.map((element) => {
+    ids.push(element.id);
+  });
+  return ids;
 };
 
 // const [category, category_created] = await Category.findOrCreate({

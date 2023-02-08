@@ -37,19 +37,23 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
 
 {
     "category_name" : "커피",
-    "subcategory_name": "싱글오리진",
+    "subcategory_name": "드립백",
     "size_price":
         [{
             "size":"100g",
-            "price":30000
+            "price":25000
         },{
             "size":"250g",
-            "price":60000
+            "price":50000
+        },{
+            "size":"500g",
+            "price":100000
         }],
-    "taste_name":["Grape", "Peach"],
-    "grinding_name":["에스프레소"],
-    "product_name" : "다섯번째 커피",
-    "roastingDate" : "2023-02-02"
+
+    "taste_name":["Grape", "Peach", "Apple", "Banana","Mango"],
+    "grinding_name":["에스프레소","갈지않음","드립","프렌치프레스","모카포트"],
+    "product_name" : "세번째 커피",
+    "roastingDate" : "2023-02-04"
 }
 
 
@@ -60,23 +64,23 @@ GET http://localhost:3000/products
 
 ###
 // 카테고리별리스트
-GET http://localhost:3000/products/coffee
+GET http://localhost:3000/products/커피
 
 
 ###
 // 특정상품정보
-GET http://localhost:3000/products/1
+GET http://localhost:3000/products/커피/3
 
 
 
 ### 특정상품삭제하기
-DELETE  http://localhost:3000/products/1
+DELETE  http://localhost:3000/products/커피/2
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 
 
 ### 특정상품옵션수정및추가하기
-PATCH  http://localhost:3000/products/3/edit/add
+PATCH  http://localhost:3000/products/커피/5/edit/add
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
@@ -84,7 +88,7 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
     "size_price":
         [{
             "size":"100g",
-            "price":100000
+            "price":222222
         },{
             "size":"250g",
             "price":200000
@@ -99,7 +103,7 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
 
 
 ### 특정상품옵셥삭제하기
-PATCH  http://localhost:3000/products/3/edit/delete
+PATCH  http://localhost:3000/products/커피/3/edit/delete
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 

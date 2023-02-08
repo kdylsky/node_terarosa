@@ -1,5 +1,6 @@
 const ExpressError = require("../utils/ExpressError");
-const { findOrCreateReturnObject } = require("../utils/utils");
+const { findOrCreateReturnObject, findSubCategory } = require("../utils/utils");
+const { Op } = require("sequelize");
 
 const {
   Category,
@@ -86,18 +87,6 @@ module.exports.AllProduct = async (req, res) => {
     include: [
       // product와 관련된 서브카테고리 정보 가지고 오기
       {
-        model: SubCategory,
-        as: "subcategory",
-        attributes: ["id", "name", "categoryId"],
-        include: [
-          {
-            model: Category,
-            as: "category",
-            attributes: ["name"],
-          },
-        ],
-      },
-      {
         model: Size,
         as: "sizes",
         attributes: ["size", "price"],
@@ -109,26 +98,18 @@ module.exports.AllProduct = async (req, res) => {
 
 module.exports.CategoryProduct = async (req, res) => {
   const { category_name } = req.params;
-  const subcategory = await SubCategory.findAll({
-    include: [
-      {
-        model: Category,
-        as: "category",
-        where: { name: category_name },
-      },
-    ],
-  });
-  const ids = [];
-  subcategory.map((element) => {
-    ids.push(element.id);
-  });
-
+  const subCategoriesIds = await findSubCategory(category_name);
   const products = await Product.findAll({
     where: {
-      subCategoryId: ids,
+      subCategoryId: subCategoriesIds,
     },
     attributes: ["id", "name", "roastingDate"],
     include: [
+      {
+        model: SubCategory,
+        as: "subcategory",
+        attributes: ["id", "name", "categoryId"],
+      },
       {
         model: Size,
         as: "sizes",
@@ -136,26 +117,28 @@ module.exports.CategoryProduct = async (req, res) => {
       },
     ],
   });
+  if (products.length === 0) {
+    res.status(400).json({ message: "존재하는 카테고리가 없습니다." });
+  }
   res.status(200).json(products);
 };
 
 module.exports.RetriveProduct = async (req, res) => {
-  const { id } = req.params;
+  const { id, category_name } = req.params;
+  const subCategoriesIds = await findSubCategory(category_name);
   const products = await Product.findByPk(id, {
     attributes: ["id", "name"],
     include: [
-      // product와 관련된 유저 정보 가지고 오기
       {
         model: User,
         as: "user",
         attributes: ["name"],
       },
-
-      // product와 관련된 서브카테고리 정보 가지고 오기
       {
         model: SubCategory,
         as: "subcategory",
         attributes: ["id", "name", "categoryId"],
+        where: { categoryId: [subCategoriesIds] },
         include: [
           {
             model: Category,
@@ -164,15 +147,11 @@ module.exports.RetriveProduct = async (req, res) => {
           },
         ],
       },
-
-      // product와 관련된 사이즈 정보 가지고 오기
       {
         model: Size,
         as: "sizes",
         attributes: ["id", "size"],
       },
-
-      // product와 관련된 taste 정보 가지고 오기
       {
         model: Taste,
         attributes: ["name"],
@@ -181,8 +160,6 @@ module.exports.RetriveProduct = async (req, res) => {
           attributes: [],
         },
       },
-
-      // product와 관련된 grinding정도 정보 가지고 오기
       {
         model: Grinding,
         attributes: ["name"],
@@ -193,21 +170,24 @@ module.exports.RetriveProduct = async (req, res) => {
       },
     ],
   });
+  if (products === null) {
+    res.status(400).json({ message: "존재하는 상품이 없습니다." });
+  }
   res.status(200).json(products);
 };
 
 module.exports.DeleteProduct = async (req, res) => {
-  const { id } = req.params;
-  // 삭제하게 되면 상품과 연관된 정보 역시 함께 지워야 한다.
-  // 상품과 연관된 정보는 size테이블
-
+  const { id, category_name } = req.params;
+  const subCategoriesIds = await findSubCategory(category_name);
   const transaction = await sequelize.transaction();
   try {
     const deleteProduct = await Product.destroy({
-      where: { id: id },
+      where: { id: id, subCategoryId: { [Op.in]: subCategoriesIds } },
       transaction: transaction,
     });
-    // await deleteProduct.destroy({ transaction: transaction });
+    if (deleteProduct === 0) {
+      res.status(400).json({ message: "존재하는 상품이 없습니다." });
+    }
     transaction.commit();
     res.status(200).json({ message: "Deleted Product" });
   } catch (error) {
@@ -217,8 +197,12 @@ module.exports.DeleteProduct = async (req, res) => {
 };
 
 module.exports.EditAddOptionProduct = async (req, res) => {
-  const { id } = req.params;
-  const product = await Product.findByPk(id);
+  const { id, category_name } = req.params;
+  const subCategoriesIds = await findSubCategory(category_name);
+  const product = await Product.findOne({
+    id: id,
+    subCategoryId: { [Op.in]: subCategoriesIds },
+  });
   const { size_price, taste_name, grinding_name } = req.body;
 
   const transaction = await sequelize.transaction();
@@ -265,8 +249,12 @@ module.exports.EditAddOptionProduct = async (req, res) => {
 };
 
 module.exports.EditDeleteOptionProduct = async (req, res) => {
-  const { id } = req.params;
-  const product = await Product.findByPk(id);
+  const { id, category_name } = req.params;
+  const subCategoriesIds = await findSubCategory(category_name);
+  const product = await Product.findOne({
+    id: id,
+    subCategoryId: { [Op.in]: subCategoriesIds },
+  });
   const { size_price, taste_name, grinding_name } = req.body;
   const transaction = await sequelize.transaction();
 

@@ -13,20 +13,20 @@ router.get("/", wrapAsync(products.AllProduct));
 router.get("/:category_name", wrapAsync(products.CategoryProduct));
 router.get("/:category_name/:id", wrapAsync(products.RetriveProduct));
 router.delete(
-  "/:id",
+  "/:category_name/:id",
   isLogin,
   isProductAuthor,
   wrapAsync(products.DeleteProduct)
 );
 router.patch(
-  "/:id/edit/add",
+  "/:category_name/:id/edit/add",
   isLogin,
   isProductAuthor,
   productEditValidation,
   wrapAsync(products.EditAddOptionProduct)
 );
 router.patch(
-  "/:id/edit/delete",
+  "/:category_name/:id/edit/delete",
   isLogin,
   isProductAuthor,
   productEditValidation,
