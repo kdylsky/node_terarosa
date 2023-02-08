@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const Taste = require("./taste");
 const Grinding = require("./grinding");
+const ExpressError = require("../utils/ExpressError");
 
 class Product extends Sequelize.Model {
   static init(sequelize) {
@@ -43,6 +44,20 @@ class Product extends Sequelize.Model {
         this.removeGrinding(item_obj);
       } else if (Model === Taste) {
         this.removeTastes(item_obj);
+      }
+    }
+  }
+
+  //인스턴스메서드
+  async findOrCreateAndAdd(req_lists, Model) {
+    for (let item of req_lists) {
+      let [item_obj, item_created] = await Model.findOrCreate({
+        where: { name: item },
+      });
+      if (Model === Grinding) {
+        await this.addGrinding(item_obj);
+      } else if (Model === Taste) {
+        await this.addTaste(item_obj);
       }
     }
   }

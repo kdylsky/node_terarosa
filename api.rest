@@ -41,19 +41,19 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
     "size_price":
         [{
             "size":"100g",
-            "price":25000
+            "price":2500
         },{
             "size":"250g",
-            "price":50000
+            "price":5000
         },{
             "size":"500g",
-            "price":100000
+            "price":1000
         }],
 
     "taste_name":["Grape", "Peach", "Apple", "Banana","Mango"],
     "grinding_name":["에스프레소","갈지않음","드립","프렌치프레스","모카포트"],
     "product_name" : "세번째 커피",
-    "roastingDate" : "2023-02-04"
+    "roastingDate" : "2023-02-03"
 }
 
 

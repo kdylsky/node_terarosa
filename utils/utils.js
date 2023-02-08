@@ -4,19 +4,16 @@ const ExpressError = require("../utils/ExpressError");
 module.exports.findOrCreateReturnObject = async (
   name,
   Model,
-  transaction,
   optional = ""
 ) => {
   if (optional.length === 0) {
     const [obj, obj_created] = await Model.findOrCreate({
       where: { name: name },
-      transaction: transaction,
     });
     return obj;
   } else {
     const [obj, obj_created] = await Model.findOrCreate({
       where: { name: name, categoryId: optional },
-      transaction: transaction,
     });
     return obj;
   }
