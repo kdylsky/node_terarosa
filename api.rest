@@ -50,8 +50,8 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
             "price":50000
         }],
 
-    "taste_name":["Grape"],
-    "grinding_name":["모카포트"],
+    "taste_name":["Grape", "Banana","Apple","Peach","Mango"],
+    "grinding_name":["모카포트","갈지않음","에스프레소", "드립","프렌치프레스"],
     "product_name" : "첫번째 커피",
     "roastingDate" : "2023-02-01"
 }
@@ -191,15 +191,15 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
 
 {
     "orderItems":[{
-        "product_id": 1,
-        "size": "250g",
-        "grinding":"드립",
+        "product_id": 5,
+        "size": "100g",
+        "grinding":"모카포트",
         "quantity":10
     },
     {
-        "product_id": 2,
+        "product_id": 5,
         "size": "500g",
-        "grinding":"에스프레소",
+        "grinding":"모카포트",
         "quantity":5
     }]
 }

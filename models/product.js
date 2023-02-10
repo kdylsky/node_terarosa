@@ -75,7 +75,6 @@ class Product extends Sequelize.Model {
   }
 
   async grindingOption(item) {
-    console.log(item);
     const grinding = await this.getGrindings({
       where: { name: item },
     });

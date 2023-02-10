@@ -33,14 +33,17 @@ module.exports.isProductAuthor = wrapAsync(async (req, res, next) => {
 module.exports.isCartAuthor = wrapAsync(async (req, res, next) => {
   const user = res.locals.currentUser;
   const { username, product_id } = req.params;
-  const product = await Product.findByPk(product_id);
-  if (!product) {
-    throw new ExpressError("카테고리 또는 상품을 다시 확인해주세요", 400);
+
+  if (product_id) {
+    const product = await Product.findByPk(product_id);
+    if (!product) {
+      throw new ExpressError("카테고리 또는 상품을 다시 확인해주세요", 400);
+    }
+    req.currentProduct = product;
   }
   const carts = await Cart.findAll({ where: { userName: username } });
   if (user.username !== username) {
     throw new ExpressError("허용된 사용자가 아닙니다.", 401);
   }
-  req.currentProduct = product;
   next();
 });

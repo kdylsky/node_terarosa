@@ -70,5 +70,4 @@ class OrderItem extends Sequelize.Model {
     });
   }
 }
-
 module.exports = OrderItem;
