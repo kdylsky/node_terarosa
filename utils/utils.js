@@ -19,7 +19,10 @@ module.exports.findOrCreateReturnObject = async (
   }
 };
 
-module.exports.findSubCategory = async (category_name) => {
+module.exports.findSubCategoryByCategory = async (category_name) => {
+  if (!["커피", "식품"].includes(category_name)) {
+    throw new ExpressError("카테고리를 확인해주세요", 400);
+  }
   const subcategory = await SubCategory.findAll({
     include: [
       {
@@ -29,9 +32,6 @@ module.exports.findSubCategory = async (category_name) => {
       },
     ],
   });
-  if (subcategory.length === 0) {
-    throw new ExpressError("상품이 존재하지 않습니다", 400);
-  }
   ids = [];
   subcategory.map((element) => {
     ids.push(element.id);
