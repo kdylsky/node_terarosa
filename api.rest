@@ -124,14 +124,14 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
 
 ###
 // 장바구니 전체리스트
-GET http://localhost:3000/carts/ldy
+GET http://localhost:3000/carts/kdy
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 
 
 ###
 // 장바구니 생성하기
-POST http://localhost:3000/carts/ldy/2
+POST http://localhost:3000/carts/kdy/5
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
@@ -140,12 +140,12 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
         {
             "quantity":"1",
             "size":"100g",
-            "grinding":"드립"
+            "grinding":"갈지않음"
         },
         {
             "quantity":"1",
             "size":"250g",
-            "grinding":"드립"
+            "grinding":"모카포트"
         }
     ]
 }
@@ -154,15 +154,16 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgj
 
 ###
 // 장바구니 옵션 수정하기
-PATCH  http://localhost:3000/carts/ldy?productId=3&size=100g&quantity=10
+PATCH  http://localhost:3000/carts/kdy/5?&size=250g&quantity=5
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 
 
 
+
 ###
 // 장바구니 삭제하기
-DELETE  http://localhost:3000/carts/ldy?productId=7&productId=9
+DELETE  http://localhost:3000/carts/kdy/5
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiJ9.a2R5.95a4t68WOn8CjQTk9yyaJPHXqwUzWRN1dXYEQgjiahM
 

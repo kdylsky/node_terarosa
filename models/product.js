@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const Taste = require("./taste");
 const Grinding = require("./grinding");
+const ExpressError = require("../utils/ExpressError");
 
 class Product extends Sequelize.Model {
   static init(sequelize) {
@@ -60,6 +61,28 @@ class Product extends Sequelize.Model {
         await this.addTaste(item_obj);
       }
     }
+  }
+
+  async sizeOption(item) {
+    const size = await this.getSizes({
+      where: { size: item },
+    });
+    if (size.length <= 0) {
+      throw new ExpressError(`해당 상품에는 ${item}사이즈가 없습니다.`);
+    }
+
+    return size[0];
+  }
+
+  async grindingOption(item) {
+    console.log(item);
+    const grinding = await this.getGrindings({
+      where: { name: item },
+    });
+    if (grinding.length <= 0) {
+      throw new ExpressError(`해당 상품에는 ${item} grinding이 없습니다.`);
+    }
+    return grinding[0];
   }
 
   static associate(db) {

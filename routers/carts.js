@@ -13,7 +13,12 @@ router.post(
   isCartAuthor,
   wrapAsync(carts.createCarts)
 );
-router.patch("/", isLogin, isCartAuthor, wrapAsync(carts.editCarts));
-router.delete("/", isLogin, isCartAuthor, wrapAsync(carts.deleteCarts));
+router.patch("/:product_id", isLogin, isCartAuthor, wrapAsync(carts.editCarts));
+router.delete(
+  "/:product_id",
+  isLogin,
+  isCartAuthor,
+  wrapAsync(carts.deleteCarts)
+);
 
 module.exports = router;

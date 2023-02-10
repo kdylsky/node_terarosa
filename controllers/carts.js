@@ -1,4 +1,5 @@
-const { Cart, Product, Size } = require("../models");
+const { Cart, Product, Size, sequelize } = require("../models");
+const ExpressError = require("../utils/ExpressError");
 
 module.exports.listCarts = async (req, res) => {
   const user = res.locals.currentUser;
@@ -6,68 +7,67 @@ module.exports.listCarts = async (req, res) => {
   const carts = await Cart.findAll({
     where: { userId: user.id, userName: username },
   });
-
-  res.status(200).json(carts);
+  return res.status(200).json(carts);
 };
 
 module.exports.createCarts = async (req, res) => {
-  const { product_id } = req.params;
-  const product = await Product.findByPk(product_id);
-  for (item of req.body.items) {
-    const size = await product.getSizes({ where: { size: item.size } });
-    if (size.length <= 0) {
-      return res.status(400).json({ message: "잘못된 사이즈입니다." });
-    }
-    const grinding = await product.getGrindings({
-      where: { name: item.grinding },
+  try {
+    result = await sequelize.transaction(async () => {
+      for (item of req.body.items) {
+        const size = await req.currentProduct.sizeOption(item.size);
+        const grinding = await req.currentProduct.grindingOption(item.grinding);
+        const [carts, cartCreated] = await Cart.findOrCreate({
+          where: {
+            userId: res.locals.currentUser.id,
+            productId: req.currentProduct.id,
+            grinding: grinding.name,
+            size: size.size,
+            userName: res.locals.currentUser.username,
+          },
+          defaults: {
+            quantity: item.quantity,
+          },
+        });
+        if (!cartCreated) {
+          carts.quantity += parseInt(item.quantity);
+        }
+        await carts.save();
+      }
+      res.status(201).json({ message: "카트에 상품이 추가되었습니다." });
     });
-    if (grinding.length <= 0) {
-      return res.status(400).json({ message: "잘못된 grinding입니다." });
-    }
-    const [carts, cartCreated] = await Cart.findOrCreate({
-      where: {
-        userId: res.locals.currentUser.id,
-        productId: product_id,
-        grinding: item.grinding,
-        size: item.size,
-        userName: res.locals.currentUser.username,
-      },
-      defaults: {
-        quantity: item.quantity,
-      },
-    });
-    if (!cartCreated) {
-      carts.quantity += parseInt(item.quantity);
-    }
-    await carts.save();
+  } catch (error) {
+    throw new ExpressError(error.message, 400);
   }
-  res.status(201).json({ message: "카트에 상품이 추가되었습니다." });
 };
 
 module.exports.editCarts = async (req, res) => {
-  const { productId, size, quantity } = req.query;
+  const { size, quantity } = req.query;
   const cart = await Cart.findOne({
     where: {
       userId: res.locals.currentUser.id,
       size: size,
-      productId: productId,
+      productId: req.currentProduct.id,
     },
   });
+  if (!cart) {
+    throw new ExpressError(`해당 상품에는 ${size}사이즈가 없습니다.`, 400);
+  }
   cart.quantity += parseInt(quantity);
   if (cart.quantity <= 0) {
     cart.quantity = 1;
   }
   await cart.save();
-  res.status(200).json(cart);
+  return res
+    .status(200)
+    .json({ message: `${size}사이즈 상품의 수량을 업데이트 했습니다.` });
 };
 
 module.exports.deleteCarts = async (req, res) => {
-  const { productId } = req.query;
-
-  for (let id of productId) {
-    Cart.destroy({
-      where: { userId: res.locals.currentUser.id, productId: id },
-    });
-  }
-  res.status(200).json({ message: "Delete Cart" });
+  Cart.destroy({
+    where: {
+      userId: res.locals.currentUser.id,
+      productId: req.currentProduct.id,
+    },
+  });
+  res.status(200).json({ message: "장바구니 아이템이 삭제되었습니다." });
 };
